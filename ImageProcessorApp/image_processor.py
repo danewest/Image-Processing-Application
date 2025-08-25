@@ -83,7 +83,7 @@ class ImageProcessor:
     def grayscale(self):
         self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
  
-    # sepia
+    # apply sepia filter to image
     def sepia(self):
         kernel = np.array([
             [0.272, 0.534, 0.131],
