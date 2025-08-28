@@ -8,8 +8,8 @@ def main():
     parser = ap.ArgumentParser(description="A command line-based image processing application.")
 
     # Adding parser arguments for different functions of the program
-    parser.add_argument("-i", "--input", nargs="+", required=True, help="Input image path(s).")
-    parser.add_argument("-o", "--output", help="Output image path (if not provided, overwrites input).")
+    parser.add_argument("-i", "--input", nargs="+", required=True, metavar="", help="Input image path(s).")
+    parser.add_argument("-o", "--output", metavar="", required=True, help="Output image path (if not provided, overwrites input).")
     parser.add_argument("-r90", "--rotate90", action="store_true", help="Rotates an image 90 degrees clockwise.")
     parser.add_argument("-r180", "--rotate180", action="store_true", help="Rotates an image 180 degrees clockwise.")
     parser.add_argument("-x", "--flipx", action="store_true", help="Flips image on the x-axis.")
@@ -20,8 +20,8 @@ def main():
     parser.add_argument("-g", "--grayscale", action="store_true", help="Applies grayscale filter.")
     parser.add_argument("-se", "--sepia", action="store_true", help="Applies sepia filter.")
     parser.add_argument("-c", "--crop", action="store_true", help="Crops image.")
-    parser.add_argument("-rp", "--resize-pixel", nargs=2, type=int, help="Resizes image width and height by pixel count.")
-    parser.add_argument("-rr", "--resize-ratio", nargs=2, type=float, help="Resizes image ratio by scale factors.")
+    parser.add_argument("-rp", "--resize-pixel", nargs=2, type=int, metavar=("W", "H"), help="Resizes image width and height by pixel count.")
+    parser.add_argument("-rr", "--resize-ratio", nargs=2, type=float, metavar=("X", "Y"), help="Resizes image ratio by scale factors.")
 
     # Assigning the different arguments to the functions of the ImageProcessor class
     argument_to_function = {
