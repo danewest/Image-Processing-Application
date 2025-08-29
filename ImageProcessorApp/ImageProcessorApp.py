@@ -64,9 +64,9 @@ def main():
                 os.makedirs(os.path.dirname(args.output), exist_ok=True)
                 out_path = args.output
             image.save(out_path)
-    else:
-        # overwrite original
-        image.save()
+        else:
+            # overwrite original
+            image.save()
 
 
 if __name__ == "__main__":
