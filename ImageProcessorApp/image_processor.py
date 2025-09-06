@@ -50,10 +50,15 @@ class ImageProcessor:
         self.image = cv2.resize(self.image, (0, 0), fx = x, fy = y)
  
     # crop image using a box select tool
-    def crop(self):
+    def crop(self, roi=None):
         self._confirm_upload()
-        roi = cv2.selectROI("Select ROI", self.image, False)
-        self.image = self.image[int(roi[1]):int(roi[1]+roi[3]), int(roi[0]):int(roi[0]+roi[2])]
+        if roi is None:
+            # normal interactive mode
+            roi = cv2.selectROI("Select ROI", self.image, False)
+        if roi[2] == 0 or roi[3] == 0:
+            raise ValueError("Invalid ROI selected")
+        x, y, w, h = roi
+        self.image = self.image[y:y+h, x:x+w]
  
     # rotate image clockwise by 90 degrees
     def rotate_90(self):
@@ -98,12 +103,24 @@ class ImageProcessor:
  
     # apply grayscale filter to image
     def grayscale(self):
-        self._confirm_upload()
-        self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        # If image already has only 2 dimensions it's grayscale
+        if len(self.image.shape) == 2:
+            return self.image
+    
+        # If it has 3 channels convert to grayscale
+        if len(self.image.shape) == 3 and self.image.shape[2] == 3:
+            self.image = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+
+        return self.image
  
     # apply sepia filter to image
     def sepia(self):
         self._confirm_upload()
+
+        # Make image is 3 channels
+        if len(self.image.shape) == 2 or self.image.shape[2] == 1:
+            self.image = cv2.cvtColor(self.image, cv2.COLOR_GRAY2BGR)
+        
         kernel = np.array([
             [0.272, 0.534, 0.131],
             [0.349, 0.686, 0.168],
